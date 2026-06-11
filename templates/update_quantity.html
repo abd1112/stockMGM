@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Update Quantity{% endblock %}
+{% block content %}
+  <h2>Update Quantity for {{ model.model }} in category {{ category.name }}</h2>
+  <p>Current quantity: {{ model.quantity }}</p>
+  <form method="post">
+    <label for="change">Change (positive or negative):</label>
+    <input type="number" name="change" required>
+    <button class="button" type="submit">Apply</button>
+    <br>
+    <label for="note">Add a Note:(Optionel)</label>
+    <input type="text" name="note" placeholder="Describe Your Changes Here" style="width: 400px; height: 50px;">
+  </form>
+  <p><a href="{{ url_for('inventory') }}">Back to Inventory</a></p>
+{% endblock %}

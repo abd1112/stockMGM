@@ -1,0 +1,106 @@
+{
+  "categories": [
+    {
+      "id": 100,
+      "name": "Sourie",
+      "models": [
+        {
+          "id": 101,
+          "model": "MODGUO",
+          "manufacture": "hp",
+          "quantity": 7
+        },
+        {
+          "id": 102,
+          "model": "B100",
+          "manufacture": "logitech",
+          "quantity": 12
+        }
+      ]
+    },
+    {
+      "id": 200,
+      "name": "Clavier",
+      "models": [
+        {
+          "id": 201,
+          "model": "KB216d1",
+          "manufacture": "dell",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": 300,
+      "name": "Camera",
+      "models": [
+        {
+          "id": 301,
+          "model": "DS-2CD1047G0-L",
+          "manufacture": "hikvision",
+          "quantity": 2
+        },
+        {
+          "id": 302,
+          "model": "DH-SD49425GB-HNR",
+          "manufacture": "dahua",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "id": 400,
+      "name": "Ordinateur",
+      "models": [
+        {
+          "id": 401,
+          "model": "vostro 3910",
+          "manufacture": "dell",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": 500,
+      "name": "SSD",
+      "models": [
+        {
+          "id": 501,
+          "model": "SU750 512GB",
+          "manufacture": "ADATA",
+          "quantity": 1
+        },
+        {
+          "id": 502,
+          "model": "TM512GH2UGL 512GB",
+          "manufacture": "TwinMOS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": 600,
+      "name": "Toner",
+      "models": [
+        {
+          "id": 601,
+          "model": "35A",
+          "manufacture": "G&G",
+          "quantity": 10
+        },
+        {
+          "id": 602,
+          "model": "111L",
+          "manufacture": "G&G",
+          "quantity": 2
+        },
+        {
+          "id": 603,
+          "model": "106A",
+          "manufacture": "G&G",
+          "quantity": 3
+        }
+      ]
+    }
+  ]
+}

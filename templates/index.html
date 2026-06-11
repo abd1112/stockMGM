@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Home</h1>
+  <p>Welcome to the inventory app.</p>
+  <ul>
+    <li><a href="{{ url_for('inventory') }}">View Inventory</a></li>
+    <li><a href="{{ url_for('add_category') }}">Add Category</a></li>
+
+    {# But adding an item requires selecting a category; you might show a page that lists categories to pick #}
+    {# Alternatively, you can have a generic “Add Item” link if you pass a default category or let user choose inside that page #}
+    <li><a href="{{ url_for('add_model', cat_id=0) }}">Add Item</a></li>
+    {# The above is placeholder; you’ll adjust so “add_model” route has a proper category_id #}
+  </ul>
+
+{% else %}
+  <h2>Welcome to My App</h2>
+  <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a>.</p>
+{% endif %}
+{% endblock %}

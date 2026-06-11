@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}Operation History{% endblock %}
+
+{% block content %}
+  <h2>Operations History</h2>
+
+  <!-- Filter Section -->
+   <form id="filterForm" method="get" action="{{ url_for('operation_history') }}">
+  <div style="margin-bottom: 20px;">
+    <h5>Filter:</h5>
+
+    <!-- Department Filter -->
+    <select name="department" id="department">
+        <option value="">All Departments</option>
+        {% for department in departments.departments %}
+            <option value="{{ department.name }}">{{ department.name }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- Item Filter -->
+    <select name="item" id="item">
+        <option value="">All Items</option>
+        {% for category in inv.categories %}
+            <option value="{{ category.name }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- Date Filter -->
+    <select name="date_filter" id="date_filter">
+        <option value="">All Dates</option>
+        <option value="last_month">Last Month</option>
+        <option value="last_year">Last Year</option>
+        <option value="custom">Between</option>
+    </select>
+    <br>
+    <!-- Custom Date Range -->
+     <div id="filterDate" style="display:none;">
+        <label for="start_date">From: </label>
+        <input type="date" id="start_date">
+        <label for="end_date">To: </label>
+        <input type="date" id="end_date">
+    </div>
+  </div>
+    <button type="submit" name="export" value="1">Export Report</button>
+  </form>
+  <!-- Table -->
+  <table class="table table-dark table-striped" id="operationsTable" border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Op ID</th>
+            <th>Date</th>
+            <th>Department</th>
+            <th>Item</th>
+            <th>Model</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for operation in history %}
+        <tr>
+            <td>{{operation.operation_id}}</td>
+            <td>{{ operation.date }}</td>
+            <td>{{ operation.department }}</td>
+            <td>{{ operation.item }}</td>
+            <td>{{ operation.model }}</td>
+            <td>{{operation.quantity}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Filtering Script -->
+  
+  <script>
+  const departmentSelect = document.getElementById("department");
+  const itemSelect = document.getElementById("item");
+  const dateFilter = document.getElementById("date_filter");
+  const filterDateDiv = document.getElementById("filterDate");
+  const startDateInput = document.getElementById("start_date");
+  const endDateInput = document.getElementById("end_date");
+  const table = document.getElementById("operationsTable");
+  const rows = table.getElementsByTagName("tr");
+
+  // Helper to parse "dd-mm-yyyy" to JS Date
+  function parseDate(dateStr) {
+    const parts = dateStr.split("-");
+    if (parts.length !== 3) return null;
+    const [day, month, year] = parts.map(Number);
+    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+    return new Date(year, month - 1, day);
+  }
+
+  function filterTable() {
+    const depFilter = departmentSelect.value.toLowerCase();
+    const itemFilter = itemSelect.value.toLowerCase();
+    const dateOption = dateFilter.value;
+    const now = new Date();
+
+    let startDate = null, endDate = null;
+
+    if (dateOption === "last_month") {
+      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      endDate = new Date(now.getFullYear(), now.getMonth(), 0); // last day of last month
+    } else if (dateOption === "last_year") {
+      startDate = new Date(now.getFullYear() - 1, 0, 1);
+      endDate = new Date(now.getFullYear() - 1, 11, 31);
+    } else if (dateOption === "custom") {
+      if (startDateInput.value && endDateInput.value) {
+        // HTML date inputs are in "YYYY-MM-DD", so we can use directly
+        startDate = new Date(startDateInput.value);
+        endDate = new Date(endDateInput.value);
+        // Set end date to end of day
+        endDate.setHours(23, 59, 59, 999);
+      }
+    }
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      // Correct column indices:
+      const opId = row.cells[0].textContent.trim();        // not used
+      const dateText = row.cells[1].textContent.trim();    // Date (dd-mm-yyyy)
+      const depText = row.cells[2].textContent.trim();     // Department
+      const itemText = row.cells[3].textContent.trim();    // Item
+
+      const matchesDep = depFilter === "" || depText.toLowerCase().includes(depFilter);
+      const matchesItem = itemFilter === "" || itemText.toLowerCase().includes(itemFilter);
+
+      let matchesDate = true;
+      if (startDate && endDate) {
+        const rowDate = parseDate(dateText);
+        matchesDate = rowDate && rowDate >= startDate && rowDate <= endDate;
+      }
+
+      row.style.display = (matchesDep && matchesItem && matchesDate) ? "" : "none";
+    }
+  }
+
+  // Show/hide custom date range
+  dateFilter.addEventListener("change", () => {
+    if (dateFilter.value === "custom") {
+      filterDateDiv.style.display = "block";
+    } else {
+      filterDateDiv.style.display = "none";
+      startDateInput.value = "";
+      endDateInput.value = "";
+    }
+    filterTable();
+  });
+
+  // Attach event listeners
+  departmentSelect.addEventListener("change", filterTable);
+  itemSelect.addEventListener("change", filterTable);
+  startDateInput.addEventListener("change", filterTable);
+  endDateInput.addEventListener("change", filterTable);
+
+  // Initial filter on page load
+  filterTable();
+</script>
+{% endblock %}

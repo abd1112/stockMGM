@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Inventory{% endblock %}
+{% block content %}
+  <h2>Inventory</h2>
+  <a href="{{ url_for('add_category') }}">Add Category</a>
+  <input type="text" id="categorySearchInput" placeholder="Rechercher dans catégories">
+  <button type="button" id="clearSearchBtn">Clear</button>
+  <hr>
+  {% for cat in inventory.categories %}
+    <div class="category-block" method="post">
+      <h3>ID:{{ cat.id }} — {{ cat.name }}</h3>
+      <a href="{{ url_for('add_model', cat_id=cat.id) }}">Add Model</a>
+      <table class="table table-dark table-striped" border="1" cellpadding="5">
+        <thead>
+          <tr>
+            <th>Model ID</th><th>Model</th><th>Manufacture</th><th>Quantity</th><th> </th><th> </th><th> </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for mod in cat.models %}
+            <tr>
+              <td>{{ mod.id }}</td>
+              <td>{{ mod.model }}</td>
+              <td>{{ mod.manufacture }}</td>
+              <td>{{ mod.quantity }}</td>
+              <td><a style="color: white;" href="{{ url_for('update_quantity', cat_id=cat.id, model_id=mod.id) }}">Change Qty</a></td>
+              <td><a style="color: white;" href="{{ url_for('give_item_to', cat_id=cat.id, model_id=mod.id) }}">Give To</a></td>
+              <td>
+                <form action="{{ url_for('delete_model', cat_id=cat.id, model_id=mod.id) }}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this model?');">
+                  <button class="button" type="submit">Delete Model</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <hr>
+  {% endfor %}
+{% endblock %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("categorySearchInput");
+    const categoryBlocks = document.querySelectorAll(".category-block");
+
+    searchInput.addEventListener("input", function() {
+      const filter = this.value.trim().toLowerCase();
+
+      categoryBlocks.forEach(block => {
+        // Grab the category name inside the block (h3)
+        const heading = block.querySelector("h3");
+        if (!heading) {
+          block.style.display = "";  // show by default if unexpected
+          return;
+        }
+        const text = heading.textContent.toLowerCase();
+
+        if (text.indexOf(filter) !== -1) {
+          block.style.display = "";   // show
+        } else {
+          block.style.display = "none"; // hide
+        }
+      });
+    });
+  });
+</script>

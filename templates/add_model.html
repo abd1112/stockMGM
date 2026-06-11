@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Add Model{% endblock %}
+{% block content %}
+  <h2>Add Model to {{ category.name }}</h2>
+  <form method="post">
+  <!--
+    <label for="model_id">Model ID:</label>
+    <input type="text" name="model_id" required>
+  -->
+    <label for="model">ID: {{mod_id}}</label><br>
+    <label for="model">Model Name:</label>
+    <input type="text" name="model" required>
+
+    <label for="manufacture">Manufacture:</label>
+    <input type="text" name="manufacture">
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" name="quantity" required>
+
+    <button class="button" type="submit">Add Model</button>
+  </form>
+  <p><a href="{{ url_for('inventory') }}">Back to Inventory</a></p>
+{% endblock %}

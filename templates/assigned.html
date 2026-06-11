@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Record Assignment</h2>
+  <form method="post">
+    <label>Component:
+      <input type="text" name="component">
+    </label><br>
+    <label>Destination department:
+      <input type="text" name="department">
+    </label><br>
+    <button class="button" type="submit">Submit</button>
+  </form>
+
+  <h3>Past Assignments</h3>
+  {% if assignments %}
+    <table border="1">
+      <tr><th>Component</th><th>Department</th><th>Timestamp</th></tr>
+      {% for a in assignments %}
+        <tr>
+          <td>{{ a.component }}</td>
+          <td>{{ a.department }}</td>
+          <td>{{ a.timestamp }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No assignments yet.</p>
+  {% endif %}
+{% endblock %}

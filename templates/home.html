@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  {% if username %}
+    <h2>Welcome, {{ username }}!</h2>
+    
+
+    <ul>
+      <li><a href="{{ url_for('inventory') }}">Inventory</a></li>
+      {# The above is placeholder; you’ll adjust so “add_model” route has a proper category_id #}
+      <li><a href="{{ url_for('departments') }}">Departments</a></li>
+      <li><a href="{{ url_for('updates_history')}} ">Updates History</a></li>
+      <li><a href="{{ url_for('operation_history')}} ">Operations History</a></li>
+    </ul>
+
+  {% else %}
+    <h2>Welcome</h2>
+    <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a>.</p>
+  {% endif %}
+{% endblock %}

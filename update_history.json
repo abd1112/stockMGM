@@ -1,0 +1,51 @@
+[
+  {
+    "operation_id": "3100102",
+    "type": "Entree",
+    "item": "Sourie",
+    "model": "B100",
+    "quantity": "5",
+    "note": "",
+    "date": "21-10-2025"
+  },
+  {
+    "operation_id": "44100101",
+    "type": "Sortie",
+    "item": "Sourie",
+    "model": "MODGUO",
+    "quantity": "-1",
+    "note": "n'est pas fonctionelle"
+  },
+  {
+    "operation_id": "17100101",
+    "type": "Entree",
+    "item": "Sourie",
+    "model": "MODGUO",
+    "quantity": "-3",
+    "note": "des souries sont endommagee"
+  },
+  {
+    "operation_id": "17100102",
+    "type": "Entree",
+    "item": "Sourie",
+    "model": "B100",
+    "quantity": "6",
+    "note": "achat des souries"
+  },
+  {
+    "operation_id": "15100101",
+    "type": "Entree",
+    "item": "Sourie",
+    "model": "MODGUO",
+    "quantity": "5",
+    "note": ""
+  },
+  {
+    "operation_id": "",
+    "type": "",
+    "item": "",
+    "model": "",
+    "quantity": "",
+    "note": ""
+  }
+]

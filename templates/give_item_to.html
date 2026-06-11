@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Give Item{% endblock %}
+
+{% block content %}
+  <h2>Give item to</h2>
+  <p>Give The Item {{category.name}} : Model {{model.model}} To:</p>
+  <form method="post">
+    <label for="department">Department:</label>
+    <select name="department" id="department" required>
+        <option value="">Choose Department</option>
+        {% for dep in departments.departments %}
+            <option value="{{ dep.name }}">{{ dep.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="quantity">Quantity:</label>
+    <input type="number" min="0" oninput="validity.valid||(value='');" name="quantity" required>
+    <br>
+    <button class="button" type="submit">Give</button>
+  </form>
+  <p><a href="{{ url_for('inventory') }}">Back to Inventory</a></p>
+{% endblock %}
+<!--
+  <form method="post">
+    <label for="department">Department:</label>
+    <select name="department" id="department" required>
+        <option value="">Choose Department</option>
+        {% for dep in departments.departments %}
+            <option value="{{ dep.name }}">{{ dep.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="item">Item:</label>
+    <select name="item" id="item" required>
+        <option value="">Choose Item</option>
+        {% for cat in inventory.categories %}
+        <option value="{{ cat.name }}">{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="model">Model:</label>
+    <select name="model" id="model" required>
+        <option value="">Choose Model</option>
+    </select>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" min="0" oninput="validity.valid||(value='');" name="quantity" required>
+    <br>
+    <button class="button" type="submit">Give</button>
+  </form>
+  <p><a href="{{ url_for('inventory') }}">Back to Inventory</a></p>
+   javascript 
+  <script id="inventory-data" type="application/json">
+    {{ inventory|tojson }}
+  </script>
+  <script>
+    const inventory = JSON.parse(document.getElementById("inventory-data").textContent);
+
+    const itemSelect = document.getElementById('item');
+    const modelSelect = document.getElementById('model');
+
+    itemSelect.addEventListener('change', function() {
+      const selectedItem = this.value;
+      modelSelect.innerHTML = '<option value="">Choose Model</option>'; // reset dropdown
+
+      // find selected category
+      const category = inventory.categories.find(cat => cat.name === selectedItem);
+      if (category && category.models.length > 0) {
+        category.models.forEach(model => {
+          const option = document.createElement('option');
+          option.value = model.model;
+          option.textContent = `${model.model} (${model.manufacture}) - Qty: ${model.quantity} `;
+          modelSelect.appendChild(option);
+        });
+      }
+    });
+  </script>
+
+-->

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Updates History</h2>
+    <div style="margin-bottom: 20px;">
+    <h5>Filter:</h5>
+
+    <!-- Item Filter -->
+    <select name="item" id="item">
+        <option value="">All Items</option>
+        {% for category in inv.categories %}
+            <option value="{{ category.name }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- Type Filter -->
+    <select name="type" id="type">
+        <option value="">All Types</option>
+        <option value="entree">Entree</option>
+        <option value="sortie">Sortie</option>
+    </select>
+
+    <!-- Date Filter -->
+    <select name="date_filter" id="date_filter">
+        <option value="">All Dates</option>
+        <option value="last_month">Last Month</option>
+        <option value="last_year">Last Year</option>
+        <option value="custom">Between</option>
+    </select>
+    <br>
+    <!-- Custom Date Range -->
+     <div id="filterDate" style="display:none;">
+        <label for="start_date">From: </label>
+        <input type="date" id="start_date">
+        <label for="end_date">To: </label>
+        <input type="date" id="end_date">
+    </div>
+  </div>
+<!-- displaying table -->
+<table class="table table-dark table-striped" id="updateTable" border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Op ID</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Item</th>
+            <th>Model</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for operation in updates %}
+            <tr class="updateRow" data-id="{{ operation.operation_id }}"  data-note="{{ operation.note | default('') }}">
+                <td>{{operation.operation_id}}</td>
+                <td>{{ operation.date }}</td>
+                <td>{{ operation.type }}</td>
+                <td>{{ operation.item }}</td>
+                <td>{{ operation.model }}</td>
+                <td>{{operation.quantity}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <!-- Style -->
+    <style>
+    .updateRow {
+    cursor: pointer;
+    transition: height 0.3s ease, background 0.3s ease;
+    }
+    .updateRow:hover {
+    background-color: #343a40;
+    }
+    .note-row td {
+    transition: all 0.3s ease;
+    }
+    </style>
+
+  <!-- filter script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const itemSelect = document.getElementById("item");
+    const typeSelect = document.getElementById("type");
+    const dateFilter = document.getElementById("date_filter");
+    const startDateInput = document.getElementById("start_date");
+    const endDateInput = document.getElementById("end_date");
+    const customDateDiv = document.getElementById("filterDate");
+    const table = document.getElementById("updateTable");
+    const rows = table.getElementsByTagName("tr");
+
+    // 🕓 Show/hide the custom date range
+    dateFilter.addEventListener("change", () => {
+        customDateDiv.style.display = dateFilter.value === "custom" ? "block" : "none";
+        filterTable(); // update results immediately
+    });
+
+    // 🧩 Filter when any selector or date changes
+    [itemSelect, typeSelect, startDateInput, endDateInput, dateFilter].forEach((el) =>
+        el.addEventListener("change", filterTable)
+    );
+
+    function filterTable() {
+        const itemValue = itemSelect.value.toLowerCase();
+        const typeValue = typeSelect.value.toLowerCase();
+        const dateOption = dateFilter.value;
+        const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+        const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+
+        const now = new Date();
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(now.getMonth() - 1);
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(now.getFullYear() - 1);
+
+        // loop through rows (skip header)
+        for (let i = 1; i < rows.length; i++) {
+        const cols = rows[i].getElementsByTagName("td");
+        if (cols.length < 5) continue;
+
+        const date = new Date(cols[1].textContent.trim());
+        const type = cols[2].textContent.trim().toLowerCase();
+        const item = cols[3].textContent.trim().toLowerCase();
+
+        let show = true;
+
+        // filter by type
+        if (typeValue && type !== typeValue) show = false;
+
+        // filter by item
+        if (itemValue && item !== itemValue) show = false;
+
+        // filter by date
+        if (dateOption === "last_month" && !(date >= oneMonthAgo && date <= now)) show = false;
+        if (dateOption === "last_year" && !(date >= oneYearAgo && date <= now)) show = false;
+        if (dateOption === "custom" && (startDate && endDate) && !(date >= startDate && date <= endDate)) show = false;
+
+        rows[i].style.display = show ? "" : "none";
+        }
+    }
+    });
+    </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const rows = document.querySelectorAll(".updateRow");
+
+        rows.forEach(row => {
+            row.addEventListener("click", function () {
+            const note = row.dataset.note || "Aucune note disponible";
+
+            // Check if already open
+            const next = row.nextElementSibling;
+            if (next && next.classList.contains("note-row")) {
+                next.remove(); // collapse
+                row.style.height = "";
+                return;
+            }
+
+            // Collapse any other open notes
+            document.querySelectorAll(".note-row").forEach(r => r.remove());
+            document.querySelectorAll(".updateRow").forEach(r => (r.style.height = ""));
+
+            // Expand clicked row
+            row.style.height = "60px";
+
+            // Create note row
+            const noteRow = document.createElement("tr");
+            noteRow.classList.add("note-row");
+            noteRow.innerHTML = `
+                <td colspan="6" style="background:#2c2c2c; color:#ccc; font-style:italic; padding:10px;">
+                <strong>Note:</strong> ${note}
+                </td>
+            `;
+
+            // Insert the note below
+            row.parentNode.insertBefore(noteRow, row.nextSibling);
+            });
+        });
+        });
+    </script>
+
+
+    
+{% endblock %}

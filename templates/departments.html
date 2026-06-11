@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Departments & History{% endblock %}
+
+{% block content %}
+  <h2>Departments</h2>
+  <p><a href="{{ url_for('add_department') }}">Add Department</a></p>
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>Department Name</th><th>Operations</th>
+      </tr>
+      <tbody>
+        {% for dep in departments.departments %}
+          
+          <tr>
+            <th>{{dep.name}}</th>
+            <th>
+              {% for operations in dep.history %}
+              <p style="margin: auto;">{{operations.date}} | {{operations.item}} | {{operations.model}} </p>
+              {% endfor %}
+            </th>
+          </tr>
+          
+        {% endfor %}
+      </tbody>
+    </thead>
+  </table>
+  {% endblock %}
+<!--
+  <select name="department" id="department">
+    <option value="">Choose Department</option>
+    {% for dep in departments.departments %}
+      <option value="{{ dep.name }}">{{ dep.name }}</option>
+    {% endfor %}
+  </select>
+
+{{ firstOp.date }} | {{ firstOp.item }} | {{ firstOp.model }}
+
+
+  <div id="history-container" style="margin-top:20px;">
+     Table for history will be inserted here 
+  </div>
+
+  <script id="departments-data" type="application/json">
+    {{ departments|tojson }}
+  </script>
+  <script>
+    const departmentsData = JSON.parse(document.getElementById("departments-data").textContent);
+    const departmentSelect = document.getElementById("department");
+    const historyContainer = document.getElementById("history-container");
+
+    departmentSelect.addEventListener("change", function() {
+      const selected = this.value;
+      historyContainer.innerHTML = "";  // clear previous
+
+      if (!selected) {
+        return;
+      }
+
+      const dept = departmentsData.departments.find(d => d.name === selected);
+      if (!dept) {
+        console.warn("No department found for", selected);
+        return;
+      }
+
+      if (!dept.history || dept.history.length === 0) {
+        historyContainer.innerHTML = "<p>No history for this department.</p>";
+        return;
+      }
+
+      // Create table
+      const table = document.createElement("table");
+      table.border = "1";
+      table.cellPadding = "5";
+      table.className = "table table-dark table-striped"
+
+      // Create header row
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+      ["Date", "Department", "Item", "Model"].forEach(colName => {
+        const th = document.createElement("th");
+        th.textContent = colName;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      // Create body with history rows
+      const tbody = document.createElement("tbody");
+      dept.history.forEach(h => {
+        const row = document.createElement("tr");
+
+        // For each field, create a cell; if missing, show empty string
+        const fields = ["date", "department", "item", "model"];
+        fields.forEach(f => {
+          const td = document.createElement("td");
+          // If `h[f]` undefined, default to empty string
+          td.textContent = h[f] !== undefined ? h[f] : "";
+          row.appendChild(td);
+        });
+
+        tbody.appendChild(row);
+      });
+      table.appendChild(tbody);
+
+      historyContainer.appendChild(table);
+    });
+  </script>
+
+-->
