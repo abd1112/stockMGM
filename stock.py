@@ -223,6 +223,12 @@ def logout():
     flash("Logged out.", "info")
     return redirect(url_for("login"))
 
+# ------------------ Contact -------------------
+@app.route("/contact")
+@login_required
+def contact():
+    
+    return render_template("contact.html", title="Contact")
 # ------------------ inventory function (login required) -------------------
 @app.route("/inventory", methods=["Get"])
 @login_required
