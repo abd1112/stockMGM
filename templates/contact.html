@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Contact{% endblock %}
 
 {% block content %}
   {% if username %}
     <h2>Welcome, {{ username }}!</h2>
     <h2>Send us A message, or call us on: +216 52 693 442</h2>
     
-    <form method="post">
+    <div>
       <label for="subject">Subject:</label>
       <input type="text" name="username" required>
       <br>
@@ -14,7 +14,7 @@
       <input type="text" name="message" required>
 
     <button class="button" type="submit">send</button>
-  </form>
+    </div>
 
 
   {% else %}
