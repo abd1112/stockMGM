@@ -230,6 +230,13 @@ def contact():
     
     return render_template("contact.html", title="Contact")
 
+# ------------------ inbox -------------------
+@app.route("/inbox")
+@login_required
+def inbox():
+    
+    return render_template("inbox.html", title="Inbox")
+
 # ------------------ about us -------------------
 @app.route("/aboutUs")
 @login_required
