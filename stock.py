@@ -229,6 +229,14 @@ def logout():
 def contact():
     
     return render_template("contact.html", title="Contact")
+
+# ------------------ about us -------------------
+@app.route("/aboutUs")
+@login_required
+def aboutUs():
+    
+    return render_template("aboutUs.html", title="About Us")
+
 # ------------------ inventory function (login required) -------------------
 @app.route("/inventory", methods=["Get"])
 @login_required
