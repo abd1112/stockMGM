@@ -332,7 +332,7 @@ def delete_model(cat_id, model_id):
     found = False
 
     for cat in inv.get("categories", []):
-        # in your data `id` is an integer or string? Here you gave 
+        # in your data `id` is an integer or string? Here you gave
         # them as numbers 100, 200 etc
         # so cat["id"] is an integer if JSON parser preserves it.
         if cat.get("id") == cat_id:
@@ -449,7 +449,7 @@ def update_quantity(cat_id, model_id):
         return redirect(url_for("inventory"))
 
     if request.method == "POST":
-        # get “change” which might be positive (increase) or 
+        # get “change” which might be positive (increase) or
         # negative (decrease)
         change = request.form.get("change")
         try:
@@ -489,6 +489,7 @@ def update_quantity(cat_id, model_id):
     return render_template(
         "update_quantity.html", title="Update Quantity", category=category, model=model
     )
+
 
 # ------------------------------ give item to ----------------------
 @app.route("/give_item_to/<int:cat_id>/<int:model_id>", methods=["GET", "POST"])
@@ -568,7 +569,7 @@ def add_department():
     dep_list = load_dep()  # this is a dict
     if request.method == "POST":
         new_dep = request.form.get("dep_name")
-        if if_dep_exist(new_dep) == True:
+        if if_dep_exist(new_dep):
             flash("This Department Name Already Exist", "Warning")
             return render_template("add_department.html", title="Add New Department")
         else:
