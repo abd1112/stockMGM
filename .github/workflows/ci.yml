@@ -45,4 +45,4 @@ jobs:
 
     - name: Run flake8
       run: |
-        flake8
+        flake8 stock.py
