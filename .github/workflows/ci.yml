@@ -38,3 +38,7 @@ jobs:
       run: |
         python stock.py &
         sleep 5
+    
+    - name: Run flake8
+        run: |
+            flake8
