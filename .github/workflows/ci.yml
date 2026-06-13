@@ -40,5 +40,5 @@ jobs:
         sleep 5
     
     - name: Run flake8
-        run: |
-            flake8
+      run: |
+        flake8
