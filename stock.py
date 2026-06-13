@@ -15,6 +15,7 @@ INVENTORY_FILE = "inventory.json"
 DEPARTMENT = "department.json"
 HISTORY = "history.json"
 UPDATES = "update_history.json"
+MESSAGES = "messages.json"
 # -------------------------------------- my variables ---------------------------------------
 time_format = "%d/%m/%Y"
 # -------------------------------------- my functions ---------------------------------------
@@ -53,6 +54,19 @@ def load_history():
         return {}
     with open(HISTORY, "r") as f:
         return json.load(f)
+    
+# ------------------ load Messages -------------------
+def load_messages():
+    if not os.path.exists(MESSAGES):
+        return {}
+    with open(MESSAGES, "r") as f:
+        return json.load(f)
+
+# ------------------ save Messages -------------------
+def save_messages(data):
+    with open(MESSAGES, "w") as f:
+        json.dump(data, f, indent=2)
+
 # ------------------ load updates history -------------------    
 def load_updates():
     if not os.path.exists(UPDATES):
@@ -234,8 +248,9 @@ def contact():
 @app.route("/inbox")
 @login_required
 def inbox():
-    
-    return render_template("inbox.html", title="Inbox")
+    myInBox = load_messages()
+
+    return render_template("inbox.html", title="Inbox", myInBox=myInBox)
 
 # ------------------ about us -------------------
 @app.route("/aboutUs")
