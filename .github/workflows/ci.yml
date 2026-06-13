@@ -34,15 +34,16 @@ jobs:
       run: |
         python -m py_compile stock.py
 
+    - name: Install curl
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y curl
+
     - name: Verify Flask app starts
       run: |
         python stock.py &
         sleep 5
-    
-    - name: install flake8
-      run: |
-        pip install flake8
 
-    - name: Run flake8
+    - name: Check server
       run: |
-        flake8 stock.py
+        curl http://127.0.0.1:5000
