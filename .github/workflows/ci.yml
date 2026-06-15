@@ -41,8 +41,12 @@ jobs:
 
     - name: Verify Flask app starts
       run: |
-        python stock.py &
-        sleep 5
+        python stock.py > flask.log 2>&1 &
+        sleep 20
+    
+    - name: Show Flask log
+      run: |
+        cat flask.log
 
     - name: Check server
       run: |
