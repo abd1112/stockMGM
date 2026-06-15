@@ -19,12 +19,12 @@ import datetime
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"  # change this in production!
 # -------------------------------------- my files -----------------------
-USERS_FILE = "users.json"
-INVENTORY_FILE = "inventory.json"
-DEPARTMENT = "department.json"
-HISTORY = "history.json"
-UPDATES = "update_history.json"
-MESSAGES = "messages.json"
+USERS_FILE = "json_files/users.json"
+INVENTORY_FILE = "json_files/inventory.json"
+DEPARTMENT = "json_files/department.json"
+HISTORY = "json_files/history.json"
+UPDATES = "json_files/update_history.json"
+MESSAGES = "json_files/messages.json"
 # -------------------------------------- my variables -------------------
 time_format = "%d/%m/%Y"
 
