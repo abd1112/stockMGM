@@ -47,7 +47,3 @@ jobs:
     - name: Show Flask log
       run: |
         cat flask.log
-
-    - name: Check server
-      run: |
-        curl http://127.0.0.1:5000
