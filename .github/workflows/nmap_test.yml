@@ -34,10 +34,10 @@ jobs:
               run: |
                 python -m py_compile stock.py
 
-            - name: Install curl
+            - name: Install tools
               run: |
                 sudo apt-get update
-                sudo apt-get install -y curl
+                sudo apt-get install -y curl nmap xsltproc
 
             - name: Verify Flask app starts
               run: |
