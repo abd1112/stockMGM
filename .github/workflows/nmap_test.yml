@@ -61,7 +61,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: deployment-logs
-                path: 
+                path: |
                   nmap.html
                   nmap.xml
                   whatweb.json
