@@ -42,7 +42,7 @@ jobs:
             - name: Verify Flask app starts
               run: |
                 python stock.py &
-                sleep 60
+                sleep 30
             
             - name: Check server
               run: |
@@ -50,12 +50,18 @@ jobs:
 
             - name: Nmap Test output
               run: |
-                nmap -p 5000 127.0.0.1 -sV -oX output.xml
-                xsltproc -o output.html /usr/share/nmap/nmap.xsl output.xml
+                nmap -p 5000 127.0.0.1 -sV -oX nmap.xml
+                xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
+            
+            - name: WhatWeb Test output
+              run: |
+                whatweb -v -a 3 --log-json=whatweb.json 127.0.0.1:5000
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
                 name: deployment-logs
-                path: output.html
+                path: nmap.html
+                path: nmap.xml
+                path: whatweb.json
             
