@@ -7,6 +7,10 @@
     {
       "username": "admin",
       "password_hash": "scrypt:32768:8:1$rNRRv9F7svWwacIf$65b6f2202d589d1bfdbe19948930204512ae2815ad0945644d0830855437656352c6f6bc6e16198ec16ef3efcd7321b220dd7ca15bacba0defe844e543aa8c18"
+    },
+    {
+      "username": "ZAP",
+      "password_hash": "scrypt:32768:8:1$6uosp0wNGXqKWWzL$79a544b7467502ffccd2587babbc44ce524bbbef372f4f2d07d118ea0f71a12e0600ea49ced5cd7cf7b9e0473510c3464c6f4483637464e62818df523104733d"
     }
   ]
 }
