@@ -42,18 +42,28 @@ jobs:
             - name: Verify Flask app starts
               run: |
                 python stock.py &
-                sleep 10
+                sleep 30
             
             - name: Check server
               run: |
                 curl http://127.0.0.1:5000
 
-    zap_scan:
-        runs-on: ubuntu-latest
-        name: Scan ZAP website
-        steps:
-          - name: ZAP Scan
-            uses: zaproxy/action-full-scan@v0.1.0
-            with:
-              target: 'http://127.0.0.1:5000'
-            
+
+            - name: Run ZAP Baseline Scan
+              run: |
+                docker pull ghcr.io/zaproxy/zap-archives/zap2docker-stable:2.14.0
+
+                docker run --rm \
+                  --network=host \
+                  -v $(pwd):/zap/wrk:rw \
+                  ghcr.io/zaproxy/zap-archives/zap2docker-stable:2.14.0 \
+                  zap-baseline.py \
+                  -t http://127.0.0.1:5000 \
+                  -r zap-report.html
+                  
+            - name: Upload ZAP Report
+              uses: actions/upload-artifact@v4
+              with:
+                name: zap-report
+                path: zap-report.html
+                        
