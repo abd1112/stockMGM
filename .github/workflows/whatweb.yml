@@ -37,7 +37,7 @@ jobs:
             - name: Install tools
               run: |
                 sudo apt-get update
-                sudo apt-get install -y curl whatweb
+                sudo apt-get install -y curl whatweb xsltproc
 
             - name: Verify Flask app starts
               run: |
@@ -50,7 +50,8 @@ jobs:
             
             - name: WhatWeb Test
               run: |
-                whatweb -v -a 3 --log-json=whatweb.json 127.0.0.1:5000
+                whatweb -v -a 3 --log-xml=whatweb.xml 127.0.0.1:5000
+                xsltproc -o whatweb.html /usr/share/nmap/nmap.xsl whatweb.xml
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
@@ -58,4 +59,5 @@ jobs:
                 name: deployment-logs
                 path: 
                   whatweb.json
+                  whatweb.html
             
