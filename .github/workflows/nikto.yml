@@ -50,12 +50,12 @@ jobs:
 
             - name: Nikto Test
               run: |
-                nikto -host http://192.168.1.230:5000/ -C all -Tuning 2 -o nikto.htm
+                nikto -host http://192.168.1.230:5000/ -C all -o nikto.htm
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
                 name: deployment-logs
                 path: |
-                  nikto.htm.htm
+                  nikto.htm
             
