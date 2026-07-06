@@ -37,23 +37,18 @@ jobs:
             - name: Install tools
               run: |
                 sudo apt-get update
-                sudo apt-get install -y curl nmap xsltproc whatweb
+                sudo apt-get install -y curl whatweb
 
             - name: Verify Flask app starts
               run: |
                 python stock.py &
-                sleep 30
+                sleep 10
             
             - name: Check server
               run: |
                 curl http://127.0.0.1:5000
-
-            - name: Nmap Test output
-              run: |
-                nmap -p 5000 127.0.0.1 -sV -oX nmap.xml
-                xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
             
-            - name: WhatWeb Test output
+            - name: WhatWeb Test
               run: |
                 whatweb -v -a 3 --log-json=whatweb.json 127.0.0.1:5000
             
@@ -61,8 +56,6 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: deployment-logs
-                path: |
-                  nmap.html
-                  nmap.xml
+                path: 
                   whatweb.json
             

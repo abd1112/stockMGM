@@ -37,7 +37,7 @@ jobs:
             - name: Install tools
               run: |
                 sudo apt-get update
-                sudo apt-get install -y curl
+                sudo apt-get install -y curl nmap xsltproc
 
             - name: Verify Flask app starts
               run: |
@@ -48,22 +48,16 @@ jobs:
               run: |
                 curl http://127.0.0.1:5000
 
-
-            - name: Run ZAP Baseline Scan
+            - name: Nmap Test output
               run: |
-                docker pull ghcr.io/zaproxy/zap-archives/zap2docker-stable:2.14.0
-
-                docker run --rm \
-                  --network=host \
-                  -v $(pwd):/zap/wrk:rw \
-                  ghcr.io/zaproxy/zap-archives/zap2docker-stable:2.14.0 \
-                  zap-baseline.py \
-                  -t http://127.0.0.1:5000 \
-                  -r zap-report.html
-                  
-            - name: Upload ZAP Report
+                nmap -p 5000 127.0.0.1 -sV -oX nmap.xml
+                xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
+            
+            - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
-                name: zap-report
-                path: zap-report.html
-                        
+                name: deployment-logs
+                path: |
+                  nmap.html
+                  nmap.xml
+            
