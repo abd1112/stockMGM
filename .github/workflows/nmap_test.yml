@@ -56,7 +56,7 @@ jobs:
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
-                name: deployment-logs
+                name: Nmap Artifacts
                 path: |
                   nmap.html
                   nmap.xml

@@ -55,7 +55,7 @@ jobs:
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
-                name: deployment-logs
+                name: Nikto Artifacts
                 path: |
                   nikto.htm
             
