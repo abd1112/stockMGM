@@ -42,7 +42,7 @@ jobs:
             - name: Verify Flask app starts
               run: |
                 python stock.py &
-                sleep 30
+                sleep 10
             
             - name: Check server
               run: |

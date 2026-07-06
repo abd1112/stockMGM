@@ -1,4 +1,4 @@
-name: Nmap Test
+name: WhatWeb Test
 
 on: 
     push:

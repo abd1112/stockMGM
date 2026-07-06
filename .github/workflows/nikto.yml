@@ -1,4 +1,4 @@
-name: Nmap Test
+name: Nikto Test
 
 on: 
     push:
@@ -42,7 +42,7 @@ jobs:
             - name: Verify Flask app starts
               run: |
                 python stock.py &
-                sleep 30
+                sleep 10
             
             - name: Check server
               run: |
@@ -50,12 +50,12 @@ jobs:
 
             - name: Nikto Test
               run: |
-                nikto -url http://192.168.1.230:5000/ -C all -Tuning 2 -o nikto.htm
+                nikto -host http://192.168.1.230:5000/ -C all -Tuning 2 -o nikto.htm
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
                 name: deployment-logs
                 path: |
-                  nikto.htm
+                  nikto.htm.htm
             
