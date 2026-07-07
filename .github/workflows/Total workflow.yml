@@ -221,3 +221,17 @@ jobs:
                 path: |
                     report_html.html
                     report_json.json
+    
+    merge-artifacts:
+        needs:
+            - nmap
+            - whatweb
+            - nikto
+        runs-on: ubuntu-latest
+        steps:
+          - name: Merge all parallel artifacts
+            uses: actions/upload-artifact/merge@v4
+            with:
+                name: final-combined-artifact
+                pattern: build-artifact-*
+                delete-merged: true
