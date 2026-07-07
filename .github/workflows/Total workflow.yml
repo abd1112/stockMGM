@@ -158,3 +158,50 @@ jobs:
                 name: Nikto Artifacts
                 path: |
                   nikto.htm
+
+    zap_scan:
+        runs-on: ubuntu-latest
+
+        steps:
+    
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: "3.12"
+
+            - name: install dependencies
+              run: |
+                python -m pip install --upgrade pip
+
+                if [ -f requirements.txt ]; then
+                    pip install -r requirements.txt
+                fi
+            
+            - name: Check Syntax
+              run: |
+                python -m py_compile stock.py
+
+            - name: Install tools
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y curl nikto
+
+            - name: Verify Flask app starts
+              run: |
+                python stock.py &
+                sleep 10
+            
+            - name: Check server
+              run: |
+                curl http://127.0.0.1:5000
+       
+            - name: ZAP Scan
+              uses: zaproxy/action-baseline@v0.6.1
+              with:
+                docker_name: 'owasp/zap2docker-stable'
+                target: 'http://127.0.0.1:5000'
+                rules_file_name: '.zap/rules.tsv'
+                cmd_options: '-a'
