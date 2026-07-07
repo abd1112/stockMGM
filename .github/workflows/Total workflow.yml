@@ -234,7 +234,6 @@ jobs:
             with:
                 name: final-combined-artifact
                 pattern: |
-                    nmap.html
                     nmap.xml
                     whatweb.xml
                     nikto.htm
