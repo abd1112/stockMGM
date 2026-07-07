@@ -233,5 +233,9 @@ jobs:
             uses: actions/upload-artifact/merge@v4
             with:
                 name: final-combined-artifact
-                pattern: build-artifact-*
+                pattern: |
+                    nmap.html
+                    nmap.xml
+                    whatweb.xml
+                    nikto.htm
                 delete-merged: true
