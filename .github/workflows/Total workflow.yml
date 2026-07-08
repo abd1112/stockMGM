@@ -54,7 +54,7 @@ jobs:
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
-                name: Nmap Artifacts
+                name: Nmap-Artifacts
                 path: |
                   nmap.html
                   nmap.xml
@@ -105,7 +105,7 @@ jobs:
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
-                name: WhatWeb Artifacts
+                name: WhatWeb-Artifacts
                 path: 
                   whatweb.xml
 
@@ -155,7 +155,7 @@ jobs:
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
-                name: Nikto Artifacts
+                name: Nikto-Artifacts
                 path: |
                   nikto.htm
 
@@ -234,7 +234,7 @@ jobs:
             with:
                 name: final-combined-artifact
                 pattern: |
-                    nmap.xml
-                    whatweb.xml
-                    nikto.htm
+                    Nmap-Artifacts
+                    WhatWeb-Artifacts
+                    Nikto-Artifacts
                 delete-merged: true
