@@ -1,10 +1,9 @@
 import os
 import sys
-import zipfile
 from datetime import datetime
 
-def generate_report(zip_filepath, output_html_path='security-summary.html'):
-    # Mapping of Scanner Name to the expected file inside the zip (from your first prompt)
+def generate_report(target_directory, output_html_path='security-summary.html'):
+    # Mapping of Scanner Name to the expected file inside the directory
     expected_files = {
         'Nmap-Html': 'nmap.html',
         'Nmap-Xml':'nmap.xml',
@@ -21,24 +20,20 @@ def generate_report(zip_filepath, output_html_path='security-summary.html'):
     statuses = {scanner: {'status': '❌', 'file': file_name, 'found': False} for scanner, file_name in expected_files.items()}
     all_successful = True
 
-    # Check zip contents if the file exists
-    if os.path.exists(zip_filepath):
-        try:
-            with zipfile.ZipFile(zip_filepath, 'r') as zip_ref:
-                zip_contents = [os.path.basename(f) for f in zip_ref.namelist()]
-                
-                for scanner, info in statuses.items():
-                    if info['file'] in zip_contents:
-                        statuses[scanner]['status'] = '✓'
-                        statuses[scanner]['found'] = True
-                    else:
-                        all_successful = False
-        except zipfile.BadZipFile:
-            all_successful = False
-            print(f"Error: {zip_filepath} is a corrupted zip file.")
+    # Check directory contents
+    if os.path.exists(target_directory) and os.path.isdir(target_directory):
+        # List all files in the directory (and lowercase them for safe matching if needed)
+        dir_contents = os.listdir(target_directory)
+        
+        for scanner, info in statuses.items():
+            if info['file'] in dir_contents:
+                statuses[scanner]['status'] = '✓'
+                statuses[scanner]['found'] = True
+            else:
+                all_successful = False
     else:
         all_successful = False
-        print(f"Error: Zip file {zip_filepath} not found.")
+        print(f"Error: Target directory '{target_directory}' not found.")
 
     # Determine overall status text
     if all_successful:
@@ -129,5 +124,6 @@ def generate_report(zip_filepath, output_html_path='security-summary.html'):
         sys.exit(0)
 
 if __name__ == "__main__":
-    zip_file = sys.argv[1] if len(sys.argv) > 1 else 'final-combined-artifact.zip'
-    generate_report(zip_file)
+    # Fallback to the current directory if no argument is given
+    target_dir = sys.argv[1] if len(sys.argv) > 1 else './downloaded-artifact'
+    generate_report(target_dir)

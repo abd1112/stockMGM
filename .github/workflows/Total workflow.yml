@@ -220,7 +220,7 @@ jobs:
                     report_html.html
                     report_json.json
     
-                    
+
     merge-artifacts:
         needs:
             - nmap
@@ -257,7 +257,7 @@ jobs:
 
           - name: Run Verification & Build HTML Report
             run: |
-                python verify.py ./downloaded-artifact/final-combined-artifact.zip
+                python verify.py ./downloaded-artifact
 
         # This step saves your final status page back to GitHub Actions
           - name: Upload Security Summary Dashboard
