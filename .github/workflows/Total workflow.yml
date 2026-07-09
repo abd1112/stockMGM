@@ -107,7 +107,6 @@ jobs:
               with:
                 name: Artifacts-WhatWeb
                 path: whatweb.xml
-                  
 
     nikto:
         runs-on: ubuntu-latest
@@ -234,3 +233,35 @@ jobs:
                 name: final-combined-artifact
                 pattern: Artifacts-* 
                 delete-merged: true
+        
+    verify-reports:
+        name: Verify Scanners Output & Generate Dashboard
+        needs: merge-artifacts # ⚠️ Must match your 4th job ID
+        runs-on: ubuntu-latest
+    
+        steps:
+          - name: Checkout repo
+            uses: actions/checkout@v4
+
+          - name: Download Merged Artifacts
+            uses: actions/download-artifact@v4
+            with:
+                name: final-combined-artifact # ⚠️ Must match Job 4's upload name
+                path: ./downloaded-artifact 
+
+          - name: Set up Python
+            uses: actions/setup-python@v5
+            with:
+                python-version: '3.11'
+
+          - name: Run Verification & Build HTML Report
+            run: |
+                python verify_reports.py ./downloaded-artifact/merged-reports.zip
+
+        # This step saves your final status page back to GitHub Actions
+          - name: Upload Security Summary Dashboard
+            uses: actions/upload-artifact@v4
+            if: always() # 💡 Ensures dashboard uploads even if the script failed!
+            with:
+                name: execution-summary-report
+                path: security-summary.html
