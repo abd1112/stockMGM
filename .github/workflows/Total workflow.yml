@@ -220,6 +220,7 @@ jobs:
                     report_html.html
                     report_json.json
     
+                    
     merge-artifacts:
         needs:
             - nmap
