@@ -256,7 +256,7 @@ jobs:
 
           - name: Run Verification & Build HTML Report
             run: |
-                python verify_reports.py ./downloaded-artifact/merged-reports.zip
+                python verify.py ./downloaded-artifact/final-combined-artifact.zip
 
         # This step saves your final status page back to GitHub Actions
           - name: Upload Security Summary Dashboard
