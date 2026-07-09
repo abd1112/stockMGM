@@ -6,9 +6,10 @@ from datetime import datetime
 def generate_report(zip_filepath, output_html_path='security-summary.html'):
     # Mapping of Scanner Name to the expected file inside the zip (from your first prompt)
     expected_files = {
-        'Nmap': 'nmap-artifacts.html',
-        'WhatWeb': 'whatweb-artifacts.html',
-        'Nikto': 'nikto-artifact.html'
+        'Nmap-Html': 'nmap.html',
+        'Nmap-Xml':'nmap.xml',
+        'WhatWeb': 'whatweb.xml',
+        'Nikto': 'nikto.htm'
     }
 
     # Gather GitHub metadata dynamically
