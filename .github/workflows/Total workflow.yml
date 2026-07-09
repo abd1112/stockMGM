@@ -252,7 +252,7 @@ jobs:
           - name: Set up Python
             uses: actions/setup-python@v5
             with:
-                python-version: '3.11'
+                python-version: '3.12'
 
           - name: Run Verification & Build HTML Report
             run: |
@@ -261,7 +261,7 @@ jobs:
         # This step saves your final status page back to GitHub Actions
           - name: Upload Security Summary Dashboard
             uses: actions/upload-artifact@v4
-            if: always() # 💡 Ensures dashboard uploads even if the script failed!
+            if: always()
             with:
                 name: execution-summary-report
                 path: security-summary.html
