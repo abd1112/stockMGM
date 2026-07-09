@@ -129,5 +129,5 @@ def generate_report(zip_filepath, output_html_path='security-summary.html'):
         sys.exit(0)
 
 if __name__ == "__main__":
-    zip_file = sys.argv[1] if len(sys.argv) > 1 else 'merged-reports.zip'
+    zip_file = sys.argv[1] if len(sys.argv) > 1 else 'final-combined-artifact.zip'
     generate_report(zip_file)
