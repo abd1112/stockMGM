@@ -51,7 +51,7 @@ jobs:
               run: |
                 nmap -p 5000 --script=vuln 127.0.0.1 -sV -oX nmap.xml
                 xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
-                python parse_nmap.py
+                python nmap_parse.py
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
@@ -151,8 +151,7 @@ jobs:
 
             - name: Nikto Test
               run: |
-                nikto -host http://127.0.0.1:5000 -C all -o nikto.xml
-                mv nikto.xml.xml nikto.xml
+                nikto -host http://127.0.0.1:5000 -C all -o nikto.htm
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
