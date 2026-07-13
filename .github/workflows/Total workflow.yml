@@ -7,6 +7,7 @@ on:
 
 
 jobs:
+
     nmap:
         runs-on: ubuntu-latest
 
@@ -48,8 +49,9 @@ jobs:
 
             - name: Nmap Test output
               run: |
-                nmap -p 5000 127.0.0.1 -sV -oX nmap.xml
+                nmap -p 5000 --script=vuln 127.0.0.1 -sV -oX nmap.xml
                 xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
+                python parse_nmap.py
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
@@ -149,7 +151,8 @@ jobs:
 
             - name: Nikto Test
               run: |
-                nikto -host http://192.168.1.230:5000/ -C all -o nikto.htm
+                nikto -host http://127.0.0.1:5000 -C all -o nikto.xml
+                mv nikto.xml.xml nikto.xml
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
@@ -219,7 +222,6 @@ jobs:
                 path: |
                     report_html.html
                     report_json.json
-    
 
     merge-artifacts:
         needs:
