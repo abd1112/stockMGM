@@ -3,7 +3,7 @@ import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
-def parse_nmap_xml(xml_path, output_html_path='nmap.html'):
+def parse_nmap_xml(xml_path, output_html_path='nmap_dashboard.html'):
     if not os.path.exists(xml_path):
         print(f"❌ Error: Input file '{xml_path}' not found.")
         sys.exit(1)

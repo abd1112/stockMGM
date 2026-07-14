@@ -5,10 +5,12 @@ from datetime import datetime
 def generate_report(target_directory, output_html_path='security-summary.html'):
     # Mapping of Scanner Name to the expected file inside the directory
     expected_files = {
-        'Nmap-Html': 'nmap.html',
+        'Nmap dashboard': 'nmap_dashboard.html',
         'Nmap-Xml':'nmap.xml',
         'WhatWeb': 'whatweb.xml',
-        'Nikto': 'nikto.htm'
+        'WhatWeb Dashboard': 'whatweb_dashboard.html',
+        'Nikto': 'nikto.htm',
+        'Nikto Dashboard': 'nikto_dashboard.html'
     }
 
     # Gather GitHub metadata dynamically

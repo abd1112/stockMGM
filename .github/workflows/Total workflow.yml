@@ -58,7 +58,7 @@ jobs:
               with:
                 name: Artifacts-Nmap
                 path: |
-                  nmap.html
+                  nmap_dashboard.html
                   nmap.xml
 
     whatweb:
@@ -103,12 +103,15 @@ jobs:
             - name: WhatWeb Test
               run: |
                 whatweb -v -a 3 --log-xml=whatweb.xml 127.0.0.1:5000
+                python whatweb_parse.py
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
                 name: Artifacts-WhatWeb
-                path: whatweb.xml
+                path: |
+                  whatweb.xml
+                  whatweb_dashboard.html
 
     nikto:
         runs-on: ubuntu-latest
@@ -152,12 +155,15 @@ jobs:
             - name: Nikto Test
               run: |
                 nikto -host http://127.0.0.1:5000 -C all -o nikto.htm
+                python nikto_parse.py nikto.htm nikto_dashboard.html
             
             - name: Upload Saved Output File
               uses: actions/upload-artifact@v4
               with:
                 name: Artifacts-Nikto
-                path: nikto.htm
+                path: |
+                  nikto.htm
+                  nikto_dashboard.html
 
     zap_scan:
         runs-on: ubuntu-latest
