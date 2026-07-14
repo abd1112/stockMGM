@@ -3,7 +3,7 @@ import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
-def parse_whatweb_xml(xml_path, output_html_path='whatweb_parsed.html'):
+def parse_whatweb_xml(xml_path, output_html_path='whatweb_dashboard.html'):
     if not os.path.exists(xml_path):
         print(f"❌ Error: Input file '{xml_path}' not found.")
         sys.exit(1)
