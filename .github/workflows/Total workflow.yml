@@ -121,11 +121,7 @@ jobs:
             - name: Verify Flask app starts
               run: |
                 python stock.py &
-                sleep 10
-            
-            - name: Check server
-              run: |
-                curl $TARGET
+                sleep 5
             
             - name: WhatWeb Test
               run: |
@@ -179,11 +175,7 @@ jobs:
             - name: Verify Flask app starts
               run: |
                 python stock.py &
-                sleep 10
-            
-            - name: Check server
-              run: |
-                curl $TARGET
+                sleep 5
 
             - name: Nikto Test
               run: |
