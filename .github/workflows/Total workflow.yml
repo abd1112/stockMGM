@@ -4,11 +4,37 @@ on:
     
     pull_request:
         branches: [ master ]
-
+    
+    workflow_dispatch:
+      inputs:
+        target:
+          description: 'Target IP Address or Domain to Scan'
+          required: true
+          default: '192.168.1.2'
+          type: string
+        run_nmap:
+          description: 'Execute Nmap Infrastructure Scan?'
+          required: true
+          type: boolean
+          default: true
+        run_whatweb:
+          description: 'Execute WhatWeb Footprint Scan?'
+          required: true
+          type: boolean
+          default: false
+        run_nikto:
+          description: 'Execute Nikto Vulnerability Scan?'
+          required: true
+          type: boolean
+          default: false
 
 jobs:
 
     nmap:
+        name: Nmap Scan Execution
+
+        if: ${{ inputs.run_nmap == true }}
+
         runs-on: ubuntu-latest
 
         steps:
@@ -45,11 +71,12 @@ jobs:
             
             - name: Check server
               run: |
-                curl http://127.0.0.1:5000
+                curl $TARGET
 
             - name: Nmap Test output
               run: |
-                nmap -p 5000 --script=vuln 127.0.0.1 -sV -oX nmap.xml
+                if [ -z "$TARGET" ]; then TARGET="192.168.1.2"; fi
+                nmap --script=vuln $TARGET -sV -oX nmap.xml
                 xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
                 python nmap_parse.py
             
@@ -62,6 +89,10 @@ jobs:
                   nmap.xml
 
     whatweb:
+        name: WhatWeb Scan Execution
+
+        if: ${{ inputs.run_whatweb == true }}
+
         runs-on: ubuntu-latest
 
         steps:
@@ -98,11 +129,13 @@ jobs:
             
             - name: Check server
               run: |
-                curl http://127.0.0.1:5000
+                curl $TARGET
             
             - name: WhatWeb Test
               run: |
-                whatweb -v -a 3 --log-xml=whatweb.xml 127.0.0.1:5000
+                
+                if [ -z "$TARGET" ]; then TARGET="192.168.1.2"; fi
+                whatweb -v -a 3 --log-xml=whatweb.xml $TARGET
                 python whatweb_parse.py
             
             - name: Upload Saved Output File
@@ -114,6 +147,10 @@ jobs:
                   whatweb_dashboard.html
 
     nikto:
+        name: WhatWeb Scan Execution
+
+        if: ${{ inputs.run_whatweb == true }}
+
         runs-on: ubuntu-latest
 
         steps:
@@ -150,11 +187,12 @@ jobs:
             
             - name: Check server
               run: |
-                curl http://127.0.0.1:5000
+                curl $TARGET
 
             - name: Nikto Test
               run: |
-                nikto -host http://127.0.0.1:5000 -C all -o nikto.htm
+                if [ -z "$TARGET" ]; then TARGET="192.168.1.2"; fi
+                nikto -host $TARGET -C all -o nikto.htm
                 python nikto_parse.py nikto.htm nikto_dashboard.html
             
             - name: Upload Saved Output File
