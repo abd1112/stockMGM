@@ -71,7 +71,7 @@ jobs:
             
             - name: Check server
               run: |
-                curl $TARGET
+                curl http://$TARGET:5000
 
             - name: Nmap Test output
               run: |
