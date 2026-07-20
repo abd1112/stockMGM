@@ -141,7 +141,7 @@ jobs:
     nikto:
         name: WhatWeb Scan Execution
 
-        if: ${{ inputs.run_whatweb == true }}
+        if: ${{ inputs.run_nikto == true }}
 
         runs-on: ubuntu-latest
 
