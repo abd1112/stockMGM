@@ -139,7 +139,7 @@ jobs:
                   whatweb_dashboard.html
 
     nikto:
-        name: WhatWeb Scan Execution
+        name: Nikto Scan Execution
 
         if: ${{ inputs.run_nikto == true }}
 
