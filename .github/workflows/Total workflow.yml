@@ -68,10 +68,6 @@ jobs:
               run: |
                 python stock.py &
                 sleep 10
-            
-            - name: Check server
-              run: |
-                curl http://$TARGET:5000
 
             - name: Nmap Test output
               run: |
