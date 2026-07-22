@@ -76,7 +76,6 @@ jobs:
 
             - name: Nmap Test output
               run: |
-                if [ -z "$TARGET" ]; then TARGET="127.0.0.1"; fi
                 nmap --script=vuln $TARGET -sV -oX nmap.xml
                 xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
                 python nmap_parse.py
@@ -130,8 +129,6 @@ jobs:
             
             - name: WhatWeb Test
               run: |
-                
-                if [ -z "$TARGET" ]; then TARGET="127.0.0.1"; fi
                 whatweb -v -a 3 --log-xml=whatweb.xml $TARGET
                 python whatweb_parse.py
             
@@ -184,7 +181,6 @@ jobs:
 
             - name: Nikto Test
               run: |
-                if [ -z "$TARGET" ]; then TARGET="127.0.0.1"; fi
                 nikto -host $TARGET -C all -o nikto.htm
                 python nikto_parse.py nikto.htm nikto_dashboard.html
             
@@ -239,7 +235,7 @@ jobs:
               uses: zaproxy/action-baseline@v0.15.0
               with:
                 docker_name: 'ghcr.io/zaproxy/zaproxy:bare'
-                target: 'http://127.0.0.1:5000'
+                target: 'http://$TARGET:5000'
                 rules_file_name: '.zap/rules.tsv'
                 cmd_options: '-a'
             
