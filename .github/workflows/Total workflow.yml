@@ -10,7 +10,7 @@ on:
         target:
           description: 'Target IP Address or Domain to Scan'
           required: true
-          default: '127.0.0.1'
+          default: ''
           type: string
         run_nmap:
           description: 'Execute Nmap Infrastructure Scan?'
@@ -132,7 +132,7 @@ jobs:
               run: |
                 
                 if [ -z "$TARGET" ]; then TARGET="127.0.0.1"; fi
-                whatweb -v -a 3 --log-xml=whatweb.xml $TARGET:5000
+                whatweb -v -a 3 --log-xml=whatweb.xml $TARGET
                 python whatweb_parse.py
             
             - name: Upload Saved Output File
