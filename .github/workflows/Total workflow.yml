@@ -10,7 +10,7 @@ on:
         target:
           description: 'Target IP Address or Domain to Scan'
           required: true
-          default: '192.168.1.2'
+          default: '127.0.0.1'
           type: string
         run_nmap:
           description: 'Execute Nmap Infrastructure Scan?'
