@@ -27,6 +27,11 @@ on:
           required: true
           type: boolean
           default: false
+        run_zap:
+          description: 'Execute Zap Vulnerability Scan?'
+          required: true
+          type: boolean
+          default: false
 
 jobs:
 
@@ -192,6 +197,10 @@ jobs:
                   nikto_dashboard.html
 
     zap_scan:
+        name: Zap Scan Execution
+
+        if: ${{ inputs.run_zap == true }}
+
         runs-on: ubuntu-latest
 
         steps:
@@ -226,10 +235,6 @@ jobs:
                 python stock.py &
                 sleep 10
             
-            - name: Check server
-              run: |
-                curl http://127.0.0.1:5000
-       
             - name: ZAP Scan
               uses: zaproxy/action-baseline@v0.15.0
               with:
