@@ -212,7 +212,7 @@ jobs:
                 fi
 
                 echo "🚀 Executing Nikto scan against target: $TARGET"
-                nikto -host $TARGET -C all -o nikto.htm
+                nikto -host $TARGET -Tuning a -o nikto.htm
                 python nikto_parse.py nikto.htm nikto_dashboard.html
             
             - name: Upload Saved Output File
