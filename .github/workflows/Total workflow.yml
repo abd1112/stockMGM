@@ -77,7 +77,13 @@ jobs:
                 FORM_TARGET: ${{ github.event.inputs.target }}
                 DEFAULT_TARGET: '127.0.0.1'
               run: |
-                echo $TARGET
+                if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$FORM_TARGET" ]; then
+                  TARGET="$FORM_TARGET"
+                else
+                  TARGET="$DEFAULT_TARGET"
+                fi
+
+                echo "🚀 Executing Nmap scan against target: $TARGET"
                 nmap --script=vuln $TARGET -sV -oX nmap.xml
                 xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
                 python nmap_parse.py
@@ -135,7 +141,13 @@ jobs:
                 FORM_TARGET: ${{ github.event.inputs.target }}
                 DEFAULT_TARGET: '127.0.0.1'
               run: |
-                echo $TARGET
+                if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$FORM_TARGET" ]; then
+                  TARGET="$FORM_TARGET"
+                else
+                  TARGET="$DEFAULT_TARGET"
+                fi
+
+                echo "🚀 Executing whatweb scan against target: $TARGET"
                 whatweb -v -a 3 --log-xml=whatweb.xml $TARGET
                 python whatweb_parse.py
             
@@ -193,7 +205,13 @@ jobs:
                 DEFAULT_TARGET: '127.0.0.1'
 
               run: |
-                $TARGET
+                if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$FORM_TARGET" ]; then
+                  TARGET="$FORM_TARGET"
+                else
+                  TARGET="$DEFAULT_TARGET"
+                fi
+
+                echo "🚀 Executing Nikto scan against target: $TARGET"
                 nikto -host $TARGET -C all -o nikto.htm
                 python nikto_parse.py nikto.htm nikto_dashboard.html
             
