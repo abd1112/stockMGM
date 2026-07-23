@@ -2,9 +2,6 @@ on:
     push:
         branches: [ master ]
     
-    pull_request:
-        branches: [ master ]
-    
     workflow_dispatch:
       inputs:
         target:
@@ -38,7 +35,7 @@ jobs:
     nmap:
         name: Nmap Scan Execution
 
-        if: ${{ inputs.run_nmap == true }}
+        if: ${{ github.event_name == 'push' || inputs.run_nmap == true }}
 
         runs-on: ubuntu-latest
 
@@ -74,8 +71,13 @@ jobs:
                 python stock.py &
                 sleep 10
 
-            - name: Nmap Test output
+            - name: Nmap Test
+              env:
+                EVENT_NAME: ${{ github.event_name }}
+                FORM_TARGET: ${{ github.event.inputs.target }}
+                DEFAULT_TARGET: '127.0.0.1'
               run: |
+                echo $TARGET
                 nmap --script=vuln $TARGET -sV -oX nmap.xml
                 xsltproc -o nmap.html /usr/share/nmap/nmap.xsl nmap.xml
                 python nmap_parse.py
@@ -91,7 +93,7 @@ jobs:
     whatweb:
         name: WhatWeb Scan Execution
 
-        if: ${{ inputs.run_whatweb == true }}
+        if: ${{ github.event_name == 'push' || inputs.run_whatweb== true }}
 
         runs-on: ubuntu-latest
 
@@ -128,7 +130,12 @@ jobs:
                 sleep 5
             
             - name: WhatWeb Test
+              env:
+                EVENT_NAME: ${{ github.event_name }}
+                FORM_TARGET: ${{ github.event.inputs.target }}
+                DEFAULT_TARGET: '127.0.0.1'
               run: |
+                echo $TARGET
                 whatweb -v -a 3 --log-xml=whatweb.xml $TARGET
                 python whatweb_parse.py
             
@@ -143,7 +150,7 @@ jobs:
     nikto:
         name: Nikto Scan Execution
 
-        if: ${{ inputs.run_nikto == true }}
+        if: ${{ github.event_name == 'push' || inputs.run_nikto == true }}
 
         runs-on: ubuntu-latest
 
@@ -180,7 +187,13 @@ jobs:
                 sleep 5
 
             - name: Nikto Test
+              env:
+                EVENT_NAME: ${{ github.event_name }}
+                FORM_TARGET: ${{ github.event.inputs.target }}
+                DEFAULT_TARGET: '127.0.0.1'
+
               run: |
+                $TARGET
                 nikto -host $TARGET -C all -o nikto.htm
                 python nikto_parse.py nikto.htm nikto_dashboard.html
             
@@ -195,7 +208,7 @@ jobs:
     zap_scan:
         name: Zap Scan Execution
 
-        if: ${{ inputs.run_zap == true }}
+        if: ${{ github.event_name == 'push' || inputs.run_zap == true }}
 
         runs-on: ubuntu-latest
 
